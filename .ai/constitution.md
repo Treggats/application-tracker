@@ -8,7 +8,7 @@ A single-user tool to track job applications, companies, contacts, and interacti
 
 ## Stack
 
-- PHP 8.4, Laravel (latest stable major)
+- PHP 8.5, Laravel (latest stable major)
 - SQLite
 - Pest for tests
 - Plain Blade with Blade components (no `@extends`/`@section`/`@yield`/`@parent`)
