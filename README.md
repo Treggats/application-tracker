@@ -6,7 +6,7 @@ also built as a portfolio piece demonstrating code discipline end to end.
 
 ## Stack
 
-- PHP 8.4, Laravel (latest stable major)
+- PHP 8.5, Laravel (latest stable major)
 - SQLite
 - Pest for tests
 - Plain Blade components (no `@extends`/`@section`/`@yield`/`@parent`)
