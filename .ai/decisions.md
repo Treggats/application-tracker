@@ -11,3 +11,40 @@ a council session, as long as the rationale is worth keeping. See
 that's where the trade-off lives; this is where the outcome does.
 
 ---
+
+## Status transitions: forward-only, terminal-final; reapplying creates a new `Application`
+_Recorded: 2026-09-01_
+
+The v1 spec listed the status flow (`lead` → `applied` → `interviewing` →
+terminal: `offer` | `rejected` | `withdrawn`) but not whether a status could
+move backward, nor where the legality of a transition gets checked.
+`ApplicationStatus::statusChange()` was mid-implementation and didn't
+handle the branch at `interviewing` at all.
+
+**Why:** no backward transitions — a terminal status is final. If a
+rejected/withdrawn application turns into a new opportunity (reapplying, or
+the company reaching out again), that's a **new `Application` record**, not
+a revived status on the old one. Keeps the history honest: one record, one
+linear-then-terminal path, no ambiguity about "was this reopened or is this
+a fresh attempt".
+
+Transition legality is validated on the enum itself —
+`ApplicationStatus::canTransitionTo(self $target): bool` — rather than on
+the `Application` model or a form request. Keeps the allowed-transitions
+table next to the enum it describes; the Observer still owns turning an
+accepted write into an `Interaction`, it doesn't decide legality.
+
+See `.ai/features/v1.md#status-flow`.
+
+---
+
+## Companies get a standalone index screen
+_Recorded: 2026-09-01_
+
+The original spec didn't say whether a company was reachable only via an
+application, or had its own list view.
+
+**Why:** v1 gets a standalone Companies index. See
+`.ai/features/v1.md#screens-v1`.
+
+---
