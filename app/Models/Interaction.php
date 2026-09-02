@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\InteractionType;
+use Database\Factories\InteractionFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -22,6 +24,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 final class Interaction extends Model
 {
+    /** @use HasFactory<InteractionFactory> */
+    use HasFactory;
+
     protected $fillable = [
         'application_id',
         'contact_id',
