@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "application-tracker": {
+      "type": "stdio",
+      "command": "herd",
+      "args": [
+        "php",
+        "artisan",
+        "mcp:start",
+        "application-tracker"
+      ],
+      "env": {}
+    }
+  }
+}
