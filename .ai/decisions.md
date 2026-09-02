@@ -38,6 +38,23 @@ See `.ai/features/v1.md#status-flow`.
 
 ---
 
+## `applied` can also go straight to `rejected`/`withdrawn`, without an interview
+_Recorded: 2026-09-02_
+
+The status flow originally only let the three terminal statuses branch off
+`interviewing`. In practice a rejection or a withdrawal can happen right
+after applying, before an interview is ever scheduled — the flow shouldn't
+force an application through `interviewing` just to reach a terminal state
+it never earned.
+
+**Why:** `ApplicationStatus::canTransitionTo()` now allows
+`applied → interviewing|rejected|withdrawn`, not just `applied →
+interviewing`. `offer` is deliberately not part of that set — an offer
+without an interview isn't a realistic v1 case, so `applied → offer` stays
+disallowed. See `.ai/features/v1.md#status-flow`.
+
+---
+
 ## Companies get a standalone index screen
 _Recorded: 2026-09-01_
 
