@@ -39,3 +39,13 @@ The backend is human work. You only fill in the presentation layer.
 - For Laravel questions, consult https://laravel.com/for/agents first.
 - Stay within the v1 scope from the feature spec. See something out of scope? Report it as a suggestion, don't build it.
 - When in doubt about the contract: stop and ask, don't guess.
+
+<laravel-boost-guidelines>
+
+# Laravel Boost Guidelines
+
+The Laravel Boost guidelines are specifically curated by Laravel maintainers for this application. These guidelines should be followed closely to ensure the best experience when building Laravel applications.
+
+Guidelines are located in `.ai/boost/`
+
+</laravel-boost-guidelines>
