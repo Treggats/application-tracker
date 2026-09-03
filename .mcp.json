@@ -10,6 +10,13 @@
         "application-tracker"
       ],
       "env": {}
+    },
+    "laravel-boost": {
+      "command": "php",
+      "args": [
+        "artisan",
+        "boost:mcp"
+      ]
     }
   }
 }
