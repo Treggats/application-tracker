@@ -27,7 +27,7 @@ A single-user tool to track job applications, companies, contacts, and interacti
 - Query builders via `Model::query()->...`, chaining on new lines
 - Eloquent Builder aliased as `EloquentQueryBuilder`
 - Custom query builders with `for...()`, `search...()`, `which...()` prefixes
-- Route names kebab-case with dot notation, HTTP verb first (e.g. `get.applications.index`)
+- Route names: standard Laravel resource naming, dot notation, no HTTP verb prefix (e.g. `applications.index`, `applications.store`)
 - Config keys snake_case, config filenames kebab-case
 
 Note: `private`-by-default applies to your own methods, not to framework contact points. Controller actions and component `render()` methods must be `public` because Laravel calls them.
