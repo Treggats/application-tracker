@@ -5,20 +5,22 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\InteractionType;
+use Carbon\CarbonImmutable;
 use Database\Factories\InteractionFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
  * @property int $application_id
  * @property int|null $contact_id
  * @property InteractionType $type
- * @property \Carbon\CarbonImmutable $occurred_at
+ * @property CarbonImmutable $occurred_at
  * @property string|null $body
- * @property \Illuminate\Support\Carbon $created_at
- * @property \Illuminate\Support\Carbon $updated_at
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
  * @property-read Application $application
  * @property-read Contact|null $contact
  */

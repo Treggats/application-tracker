@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Carbon\CarbonImmutable;
 use Database\Factories\CompanyFactory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -17,11 +20,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string|null $city
  * @property string|null $sbi_code
  * @property string|null $sbi_description
- * @property \Carbon\CarbonImmutable|null $enriched_at
- * @property \Illuminate\Support\Carbon $created_at
- * @property \Illuminate\Support\Carbon $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Application> $applications
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Contact> $contacts
+ * @property CarbonImmutable|null $enriched_at
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property-read Collection<int, Application> $applications
+ * @property-read Collection<int, Contact> $contacts
  */
 final class Company extends Model
 {
