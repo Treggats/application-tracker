@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Enums\ApplicationStatus;
 use App\Mcp\Servers\ApplicationTrackerServer;
 use App\Mcp\Tools\ListApplicationsTool;
