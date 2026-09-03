@@ -3,4 +3,4 @@
 use App\Mcp\Servers\ApplicationTrackerServer;
 use Laravel\Mcp\Facades\Mcp;
 
- Mcp::local('application-tracker', ApplicationTrackerServer::class);
+Mcp::local('application-tracker', ApplicationTrackerServer::class);
