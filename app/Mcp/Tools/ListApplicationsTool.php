@@ -4,7 +4,6 @@ namespace App\Mcp\Tools;
 
 use App\Enums\ApplicationStatus;
 use App\Models\Application;
-use App\Models\Company;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Illuminate\Validation\Rule;
@@ -26,7 +25,7 @@ class ListApplicationsTool extends Tool
                 'nullable',
                 'string',
                 Rule::enum(ApplicationStatus::class),
-            ]
+            ],
         ]);
 
         $applications = Application::query()
