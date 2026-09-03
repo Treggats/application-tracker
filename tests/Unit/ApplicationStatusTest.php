@@ -7,13 +7,13 @@ describe('the enum can only move forward', function () {
         $enum = ApplicationStatus::INTERVIEWING;
         expect($enum->statusChange(ApplicationStatus::OFFER))->toBe(ApplicationStatus::OFFER)
             ->and($enum->statusChange(ApplicationStatus::REJECTED))
-                ->toBe(ApplicationStatus::REJECTED)
+            ->toBe(ApplicationStatus::REJECTED)
             ->and($enum->statusChange(ApplicationStatus::WITHDRAWN))
-                ->toBe(ApplicationStatus::WITHDRAWN)
+            ->toBe(ApplicationStatus::WITHDRAWN)
             ->and($enum->statusChange(ApplicationStatus::APPLIED))
-                ->toBe(ApplicationStatus::INTERVIEWING)
+            ->toBe(ApplicationStatus::INTERVIEWING)
             ->and($enum->statusChange(ApplicationStatus::LEAD))
-                ->toBe(ApplicationStatus::INTERVIEWING);
+            ->toBe(ApplicationStatus::INTERVIEWING);
     });
 
     test('status change must be different than the current', function () {
