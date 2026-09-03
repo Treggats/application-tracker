@@ -116,3 +116,23 @@ forgettability argument above; revisit if `Application` accumulates enough
 inline event handling to outweigh that.
 
 ---
+
+## Route names drop the HTTP-verb prefix, use standard Laravel resource naming
+_Recorded: 2026-09-03_
+
+`.ai/constitution.md` originally specified route names as kebab-case with
+the HTTP verb first (`get.applications.index`). Dropped starting with the
+applications CRUD work.
+
+**Why:** the verb prefix duplicates information Laravel already encodes
+elsewhere (the route's HTTP method, visible in `routes/web.php` and
+`php artisan route:list`) without adding anything route *names* are
+actually used for — generating URLs and redirects, where the verb is
+irrelevant. Standard resource naming (`applications.index`,
+`applications.store`, ...) is what `Route::resource()` generates by
+default and what any Laravel developer already expects; the custom prefix
+added friction without a matching benefit. `.ai/constitution.md` updated
+directly rather than only recorded as an exception here, since this is the
+project's rule itself changing, not a one-off deviation from it.
+
+---
