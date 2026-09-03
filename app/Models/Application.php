@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\ApplicationStatus;
 use App\Enums\InteractionType;
+use App\Exceptions\InvalidStatusTransitionException;
 use Carbon\CarbonImmutable;
 use Database\Factories\ApplicationFactory;
 use Illuminate\Database\Eloquent\Collection;
@@ -83,5 +84,18 @@ final class Application extends Model
             'status' => ApplicationStatus::class,
             'applied_at' => 'immutable_datetime',
         ];
+    }
+
+    public function transitionTo(ApplicationStatus $status): self
+    {
+        if (! $this->status->canTransitionTo($status)) {
+            throw InvalidStatusTransitionException::from($this->status, $status);
+        }
+
+        $this->status = $status;
+
+        $this->save();
+
+        return $this;
     }
 }

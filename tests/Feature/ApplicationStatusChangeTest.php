@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Enums\ApplicationStatus;
+use App\Exceptions\InvalidStatusTransitionException;
 use App\Models\Application;
 use App\Models\Interaction;
 
@@ -10,7 +12,8 @@ describe('the status of an application can change', function () {
         $application = Application::factory()
             ->lead()
             ->create();
-        $application->update(['status' => 'applied']);
+
+        $application->transitionTo(ApplicationStatus::APPLIED);
 
         /** @var Interaction $interaction */
         $interaction = $application->interactions()->first();
@@ -20,4 +23,18 @@ describe('the status of an application can change', function () {
             ->and($interaction->type->value)
             ->toBe('status_change');
     });
+
+    test('an exception is thrown when the application status is prohibited', function () {
+        $application = Application::factory()
+            ->interviewing()
+            ->create();
+
+        expect(fn () => $application->transitionTo(ApplicationStatus::APPLIED))
+            ->toThrow(InvalidStatusTransitionException::class);
+
+        expect($application->status)->toBe(ApplicationStatus::INTERVIEWING);
+
+        expect(Interaction::query()->count())->toBe(0);
+    });
+
 });
