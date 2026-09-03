@@ -93,3 +93,26 @@ Rejected as more tooling than the actual risk (single author, single
 codebase) justifies right now.
 
 ---
+
+## Status-change observer lives inline on `Application`, not a separate `Observer` class
+_Recorded: 2026-09-03_
+
+Laravel supports both a dedicated `Observer` class (registered via
+`#[ObservedBy]` or in a service provider) and reacting to model events
+directly inside the model's own `boot()`. The spec (`v1.md`) only specifies
+the *effect* ("via an observer on `Application`"), not which of the two.
+
+**Why:** kept inline in `Application::boot()` rather than split into
+`app/Observers/ApplicationObserver.php`. A separate Observer class is easy
+to forget exists — it's registered elsewhere, invisible from the model
+itself, and its file naturally goes unopened while working on the model.
+Inline keeps the status-change side effect visible right next to `status`'s
+own logic (`canTransitionTo()`), at the cost of a slightly larger model
+class.
+
+**Alternative considered:** a dedicated `ApplicationObserver` class,
+Laravel's more common convention for this. Rejected for now on the
+forgettability argument above; revisit if `Application` accumulates enough
+inline event handling to outweigh that.
+
+---

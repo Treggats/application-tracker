@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\ApplicationStatus;
+use App\Enums\InteractionType;
 use Carbon\CarbonImmutable;
 use Database\Factories\ApplicationFactory;
 use Illuminate\Database\Eloquent\Collection;
@@ -40,6 +41,29 @@ final class Application extends Model
         'applied_at',
         'notes',
     ];
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        self::updated(function (Application $application) {
+            if (! $application->wasChanged('status')) {
+                return;
+            }
+
+            /** @var array<string, string> $previous */
+            $previous = $application->getPrevious();
+            $application->interactions()->create([
+                'type' => InteractionType::STATUS_CHANGE,
+                'occurred_at' => CarbonImmutable::now(),
+                'body' => sprintf(
+                    'Status changed from %s to %s.',
+                    $previous['status'],
+                    $application->status->value,
+                ),
+            ]);
+        });
+    }
 
     /** @phpstan-return BelongsTo<Company, $this> */
     public function company(): BelongsTo
