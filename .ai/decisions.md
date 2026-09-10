@@ -136,3 +136,44 @@ directly rather than only recorded as an exception here, since this is the
 project's rule itself changing, not a one-off deviation from it.
 
 ---
+
+## `ApplicationController::update()` writes status through `Application::transitionTo()`, not mass-assignment
+_Recorded: 2026-09-10_
+
+`.ai/specs/applications-crud/specification.md` flagged that `update()`
+originally wrote `status` via plain `$application->update($request->validated())`
+— relying entirely on `UpdateApplicationRequest`'s `TransitionToStatusRule`
+to keep an invalid transition out. The model's own
+`Application::transitionTo()` (see "Status changes go through one model
+method...", above) was never actually called from this path, so the
+model had no self-protection independent of that one caller.
+
+**Why:** `update()` now uses `Request::whenEnum('status', ...)` — when
+`status` is present, it calls `$application->transitionTo($enum)`, whose
+own `save()` persists the other, already-`fill()`ed fields in the same
+write; when absent, a plain `save()` runs instead. The model is now
+self-guarding regardless of caller (tinker, a seeder, a future MCP write
+tool), matching what "the sole convention" was supposed to mean.
+`TransitionToStatusRule` stays in the form request — it still reuses
+`canTransitionTo()` rather than reimplementing it, so keeping both isn't
+duplicated logic, just validation-layer (friendly error, before any write)
+plus model-layer (invariant, regardless of caller) enforcing the same
+rule for different reasons.
+
+---
+
+## Status is not settable on create; every new `Application` starts at `lead`
+_Recorded: 2026-09-10_
+
+`StoreApplicationRequest` validated a `status` field that `store()` then
+discarded (`...$request->safe()->except('status')`) in favor of a
+hardcoded `ApplicationStatus::LEAD`. The validation rule was pure noise —
+it constrained input that was never written.
+
+**Why:** removed the `status` rule and field entirely from
+`StoreApplicationRequest`. A new application always starts at `lead`;
+there's nothing to transition *from* yet, so allowing an arbitrary status
+at creation was never meaningful. See
+`.ai/specs/applications-crud/specification.md#create--store`.
+
+---
