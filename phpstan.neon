@@ -9,3 +9,9 @@ parameters:
         - tests
 
     level: 9
+
+    ignoreErrors:
+        -
+            message: '#Call to an undefined method Pest\\PendingCalls\\TestCall::\w+\(\)\.#'
+            path: tests/*.php
+            reportUnmatched: true
