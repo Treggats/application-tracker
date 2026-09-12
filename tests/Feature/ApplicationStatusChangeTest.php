@@ -37,4 +37,42 @@ describe('the status of an application can change', function () {
         expect(Interaction::query()->count())->toBe(0);
     });
 
+    test('that a validation error is thrown when the status is not a known status', function () {
+        $application = Application::factory()
+            ->lead()
+            ->create();
+
+        $response = $this->putJson(route('applications.update', $application), [
+            'status' => 'invalid',
+        ]);
+
+        $response
+            ->assertUnprocessable()
+            ->assertInvalid(['status'])
+            ->assertJsonValidationErrors([
+                'status' => [
+                    'The selected status is invalid.',
+                    'Application status \'invalid\' is not a valid application status',
+                ],
+            ]);
+    });
+
+    test('that a validation error is thrown when the status is not allowed to progress', function () {
+        $application = Application::factory()
+            ->lead()
+            ->create();
+
+        $response = $this->putJson(route('applications.update', $application), [
+            'status' => ApplicationStatus::INTERVIEWING,
+        ]);
+
+        $response
+            ->assertUnprocessable()
+            ->assertInvalid(['status'])
+            ->assertJsonValidationErrors([
+                'status' => [
+                    'Cannot transition to status interviewing from lead status',
+                ],
+            ]);
+    });
 });
