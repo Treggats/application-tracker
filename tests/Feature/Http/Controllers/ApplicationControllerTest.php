@@ -9,11 +9,14 @@ use App\Models\Interaction;
 
 describe('the application controller can create, update and delete applications', function () {
     test('that a list of applications can be retrieved', function () {
-        Application::factory()->count(3)->create();
+        $applications = Application::factory()
+            ->count(3)
+            ->lead()
+            ->create();
 
         $response = $this->json('GET', route('applications.index'));
-        // waiting for implementation of the View
-        expect($response->content())->toBe('');
+
+        expect($response->content())->toContain(...$applications->pluck('role_title')->all());
     });
 
     test('that a single application can be retrieved', function () {
@@ -23,8 +26,7 @@ describe('the application controller can create, update and delete applications'
 
         $response = $this->json('GET', route('applications.show', $application));
 
-        // waiting for implementation of the View
-        expect($response->content())->toBe('');
+        expect($response->content())->toContain($application->role_title);
     });
 
     test('that a single application can be created with the LEAD status', function () {
