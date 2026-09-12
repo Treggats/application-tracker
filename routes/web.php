@@ -10,11 +10,11 @@ Route::get('/', function () {
 Route::get('/applications', [ApplicationController::class, 'index'])
     ->name('applications.index');
 
+Route::view('applications/create', 'applications.create')
+    ->name('applications.create');
+
 Route::get('/applications/{application}', [ApplicationController::class, 'show'])
     ->name('applications.show');
-
-Route::view('create', 'applications.create')
-    ->name('applications.create');
 
 Route::post('applications', [ApplicationController::class, 'store'])
     ->name('applications.store');
